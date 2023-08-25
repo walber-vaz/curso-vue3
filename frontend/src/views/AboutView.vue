@@ -1,15 +1,14 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <main>
+    <h1>About</h1>
+  </main>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
+<style lang="scss" scoped>
+h1 {
+  color: #41b883;
+  font-size: 4em;
+  text-align: center;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 </style>
