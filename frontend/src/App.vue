@@ -17,6 +17,26 @@ export default {
     increment() {
       this.count++
     }
+  },
+
+  // mounted -> ele é executado depois que o DOM é montado
+  mounted() {
+    console.log('App.vue mounted')
+  },
+
+  // created -> ele é executado antes do DOM ser montado
+  created() {
+    console.log('App.vue created')
+  },
+
+  // destroyed -> ele é executado quando o componente é destruido
+  unmounted() {
+    console.log('App.vue destroyed')
+  },
+
+  // updated -> ele é executado quando o componente é atualizado
+  updated() {
+    console.log('App.vue updated')
   }
 }
 </script>
