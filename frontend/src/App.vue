@@ -8,21 +8,24 @@ const users = reactive([
     name: 'John Doe',
     age: 25,
     email: 'email@email.com',
-    role: ['admin']
+    role: ['admin'],
+    img: 'https://ui-avatars.com/api/?rounded=true&background=random&size=96&bold=true'
   },
   {
     id: 2,
     name: 'Jane Doe',
     age: 24,
     email: 'email@email.com',
-    role: ['user']
+    role: ['user'],
+    img: 'https://ui-avatars.com/api/?rounded=true&background=random&size=96&bold=true'
   },
   {
     id: 3,
     name: 'John Smith',
     age: 26,
     email: 'email@email.com',
-    role: ['user']
+    role: ['user'],
+    img: 'https://ui-avatars.com/api/?rounded=true&background=random&size=96&bold=true'
   }
 ])
 </script>
@@ -41,7 +44,10 @@ const users = reactive([
     <ul>
       <li v-for="user in users" :key="user.id">
         <span v-if="user.role.includes('admin')">👑</span>
-        <strong>{{ user.name }} - {{ user.age }} - {{ user.email }}</strong>
+        <img :src="user.img" :alt="user.name" />
+        <strong :class="{ isAdmin: user.role.includes('admin') }"
+          >{{ user.name }} - {{ user.age }} - {{ user.email }}</strong
+        >
       </li>
     </ul>
   </section>
@@ -74,6 +80,8 @@ const users = reactive([
     gap: 2rem;
 
     li {
+      display: flex;
+      align-items: center;
       font-size: 2rem;
       font-weight: bold;
       color: #111;
@@ -84,11 +92,27 @@ const users = reactive([
         cursor: pointer;
       }
 
+      img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        margin-left: 1rem;
+      }
+
       strong {
         margin-left: 1rem;
         font-weight: bold;
       }
     }
+  }
+}
+
+.isAdmin {
+  color: #41b883;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: #111;
   }
 }
 </style>
