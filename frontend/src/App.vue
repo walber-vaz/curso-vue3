@@ -28,6 +28,14 @@ const users = reactive([
     img: 'https://ui-avatars.com/api/?rounded=true&background=random&size=96&bold=true'
   }
 ])
+
+const addTooltip = (user: any) => {
+  user.showTooltip = true
+}
+
+const removeTooltip = (user: any) => {
+  user.showTooltip = false
+}
 </script>
 
 <template>
@@ -45,9 +53,15 @@ const users = reactive([
       <li v-for="user in users" :key="user.id">
         <span v-if="user.role.includes('admin')">👑</span>
         <img :src="user.img" :alt="user.name" />
-        <strong :class="{ isAdmin: user.role.includes('admin') }"
+        <strong
+          :class="{ isAdmin: user.role.includes('admin') }"
+          @mouseover="addTooltip(user)"
+          @mouseleave="removeTooltip(user)"
           >{{ user.name }} - {{ user.age }} - {{ user.email }}</strong
         >
+        <div v-if="user.showTooltip" class="tooltip">
+          {{ user.role.includes('admin') ? 'Admin' : 'User' }}
+        </div>
       </li>
     </ul>
   </section>
@@ -55,6 +69,33 @@ const users = reactive([
 
 <style lang="scss">
 @import url('@/assets/scss/app.scss');
+
+@keyframes tooltipAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tooltip {
+  position: absolute;
+  top: 4rem;
+  left: 8rem;
+  background-color: #41b883;
+  color: #111;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
 
 .section-user {
   margin-top: 2rem;
@@ -80,6 +121,7 @@ const users = reactive([
     gap: 2rem;
 
     li {
+      position: relative;
       display: flex;
       align-items: center;
       font-size: 2rem;
@@ -90,6 +132,13 @@ const users = reactive([
       &:hover {
         color: #41b883;
         cursor: pointer;
+      }
+
+      &:hover .tooltip {
+        opacity: 1;
+        pointer-events: all;
+        animation: tooltipAnimation 0.6s ease-in-out forwards;
+        animation-iteration-count: 1;
       }
 
       img {
