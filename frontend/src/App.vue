@@ -1,79 +1,108 @@
 <script setup lang="ts">
-import HeaderComponent from '@/components/HeaderComponent.vue'
-import {
-  onBeforeMount,
-  onBeforeUpdate,
-  onErrorCaptured,
-  onMounted,
-  onUnmounted,
-  onUpdated,
-  reactive,
-  ref
-} from 'vue'
+import type { IUser } from '@/types/IUser'
+import { fetchApi } from '@/utils/fetchApi'
+import { onMounted, reactive } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 
-const count = ref(0)
-const show = ref(false)
-const users = reactive([
-  { id: 1, name: 'John' },
-  { id: 2, name: 'Mary' },
-  { id: 3, name: 'Steve' }
-])
-const increment = () => count.value++
+// // onMounted -> Ele é executado quando o componente é montado no DOM
+// onMounted(() => {
+//   console.log('Componente montado')
+// })
 
-// onMounted -> Ele é executado quando o componente é montado no DOM
-onMounted(() => {
-  console.log('Componente montado')
-})
+// // onBeforeMount -> Ele é executado antes do componente ser montado no DOM
+// onBeforeMount(() => {
+//   console.log('Componente antes de ser montado')
+// })
 
-// onBeforeMount -> Ele é executado antes do componente ser montado no DOM
-onBeforeMount(() => {
-  console.log('Componente antes de ser montado')
-})
+// // onBeforeUpdate -> Ele é executado antes do componente ser atualizado
+// onBeforeUpdate(() => {
+//   console.log('Componente antes de ser atualizado')
+// })
 
-// onBeforeUpdate -> Ele é executado antes do componente ser atualizado
-onBeforeUpdate(() => {
-  console.log('Componente antes de ser atualizado')
-})
+// // onUpdated -> Ele é executado quando o componente é atualizado
+// onUpdated(() => {
+//   console.log('Componente atualizado')
+// })
 
-// onUpdated -> Ele é executado quando o componente é atualizado
-onUpdated(() => {
-  console.log('Componente atualizado')
-})
+// // onUnmounted -> Ele é executado quando o componente é desmontado do DOM
+// onUnmounted(() => {
+//   console.log('Componente desmontado')
+// })
 
-// onUnmounted -> Ele é executado quando o componente é desmontado do DOM
-onUnmounted(() => {
-  console.log('Componente desmontado')
-})
+// // onErrorCaptured -> Ele é executado quando ocorre um erro no componente
+// onErrorCaptured(() => {
+//   console.log('Componente com erro')
+// })
+const users: IUser[] = reactive([])
 
-// onErrorCaptured -> Ele é executado quando ocorre um erro no componente
-onErrorCaptured(() => {
-  console.log('Componente com erro')
+onMounted(async () => {
+  try {
+    const { data } = await fetchApi.get<IUser[]>('users')
+    const sorted = data.sort((a, b) => a.firstname.localeCompare(b.firstname))
+    users.push(...sorted)
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message)
+    }
+  }
 })
 </script>
 
 <template>
   <header class="header">
-    <HeaderComponent />
     <nav class="nav">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
     </nav>
   </header>
 
-  <button type="button" @click="increment">count is: {{ count }}</button>
-  <button type="button" @click="show = !show">show is: {{ show }}</button>
-
-  <h2>Users</h2>
-  <!-- Usando reactive -->
-  <ul v-if="show">
-    <li v-for="user in users" :key="user.id">
-      {{ user.name }}
-    </li>
-  </ul>
   <RouterView class="content" />
+  <section class="section-user">
+    <h1>Users</h1>
+    <ul>
+      <li v-for="user in users" :key="user.id">
+        {{ user.firstname }}
+      </li>
+    </ul>
+  </section>
 </template>
 
 <style lang="scss">
 @import url('@/assets/scss/app.scss');
+.section-user {
+  margin-top: 2rem;
+  max-height: 96rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-user ul {
+  display: flex;
+  max-width: 96rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.section-user h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 1rem;
+}
+
+.section-user li {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #111;
+  transition: color 0.2s ease-in-out;
+}
+
+.section-user li:hover {
+  color: #41b883;
+  cursor: pointer;
+}
 </style>
