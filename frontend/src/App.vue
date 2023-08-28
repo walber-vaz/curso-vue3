@@ -1,5 +1,5 @@
 <script lang="ts">
-import { type IUser } from '@/types/IUser'
+import type { IUser } from '@/types/IUser'
 import { fetchApi } from '@/utils/fetchApi'
 import { RouterLink, RouterView } from 'vue-router'
 
