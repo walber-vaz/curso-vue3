@@ -7,11 +7,18 @@ import {
   onMounted,
   onUnmounted,
   onUpdated,
+  reactive,
   ref
 } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 
 const count = ref(0)
+const show = ref(false)
+const users = reactive([
+  { id: 1, name: 'John' },
+  { id: 2, name: 'Mary' },
+  { id: 3, name: 'Steve' }
+])
 const increment = () => count.value++
 
 // onMounted -> Ele é executado quando o componente é montado no DOM
@@ -55,6 +62,15 @@ onErrorCaptured(() => {
   </header>
 
   <button type="button" @click="increment">count is: {{ count }}</button>
+  <button type="button" @click="show = !show">show is: {{ show }}</button>
+
+  <h2>Users</h2>
+  <!-- Usando reactive -->
+  <ul v-if="show">
+    <li v-for="user in users" :key="user.id">
+      {{ user.name }}
+    </li>
+  </ul>
   <RouterView class="content" />
 </template>
 
