@@ -10,7 +10,18 @@ export default {
   },
   data() {
     return {
-      count: 0
+      count: 0,
+      show: false,
+      users: [
+        {
+          id: 1,
+          name: 'John Doe'
+        },
+        {
+          id: 2,
+          name: 'Jane Doe'
+        }
+      ]
     }
   },
   methods: {
@@ -51,6 +62,15 @@ export default {
   </header>
 
   <button @click="increment">count is: {{ count }}</button>
+  <button @click="show = !show">show is: {{ show }}</button>
+
+  <div v-if="show">
+    <ul>
+      <li v-for="user in users" :key="user.id">
+        {{ user.name }}
+      </li>
+    </ul>
+  </div>
   <RouterView class="content" />
 </template>
 
