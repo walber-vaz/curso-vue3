@@ -36,6 +36,21 @@ const addTooltip = (user: any) => {
 const removeTooltip = (user: any) => {
   user.showTooltip = false
 }
+
+const addUser = () => {
+  const name = document.getElementById('name') as HTMLInputElement
+  const newUser = {
+    id: users.length + 1,
+    name: name.value,
+    age: 32,
+    email: 'email@email.com',
+    role: ['user'],
+    img: 'https://ui-avatars.com/api/?rounded=true&background=random&size=96&bold=true'
+  }
+
+  users.push(newUser)
+  name.value = ''
+}
 </script>
 
 <template>
@@ -64,6 +79,8 @@ const removeTooltip = (user: any) => {
         </div>
       </li>
     </ul>
+    <input type="text" placeholder="Nome" name="name" id="name" />
+    <button class="btn" type="button" @click="addUser()">Adicionar</button>
   </section>
 </template>
 
@@ -105,11 +122,52 @@ const removeTooltip = (user: any) => {
   align-items: center;
   justify-content: center;
 
-  h1 {
-    font-size: 3.5rem;
+  input[type='text'] {
+    width: 50rem;
+    height: 5rem;
+    border: 1px solid #41b883;
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+    font-size: 2rem;
     font-weight: bold;
+    margin-top: 5rem;
     color: #111;
-    margin-bottom: 1rem;
+    transition: border-color 0.2s ease-in-out;
+
+    &:focus {
+      border-color: #111;
+    }
+
+    &::placeholder {
+      color: #41b883;
+      opacity: 0.5;
+    }
+  }
+
+  h1 {
+    font-size: 3.2rem;
+    font-weight: bold;
+    color: #41b883;
+  }
+
+  .btn {
+    width: 50rem;
+    height: 5rem;
+    border: 1px solid #41b883;
+    border-radius: 0.5rem;
+    background-color: #41b883;
+    color: #111;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 2rem;
+    text-align: center;
+    transition: background-color 0.4s ease-in-out;
+
+    &:hover {
+      background-color: #111;
+      color: #41b883;
+      cursor: pointer;
+    }
   }
 
   ul {
