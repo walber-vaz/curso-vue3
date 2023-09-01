@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { IUser } from '@/types/IUser'
-import { fetchApi } from '@/utils/fetchApi'
-import { onMounted, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 
 // // onMounted -> Ele é executado quando o componente é montado no DOM
@@ -33,19 +31,30 @@ import { RouterLink, RouterView } from 'vue-router'
 // onErrorCaptured(() => {
 //   console.log('Componente com erro')
 // })
-const users: IUser[] = reactive([])
+// const users: IUser[] = reactive([])
 
-onMounted(async () => {
-  try {
-    const { data } = await fetchApi.get<IUser[]>('users')
-    const sorted = data.sort((a, b) => a.firstname.localeCompare(b.firstname))
-    users.push(...sorted)
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log(error.message)
-    }
+// onMounted(async () => {
+//   try {
+//     const { data } = await fetchApi.get<IUser[]>('users')
+//     const sorted = data.sort((a, b) => a.firstname.localeCompare(b.firstname))
+//     users.push(...sorted)
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log(error.message)
+//     }
+//   }
+// })
+const users = reactive([
+  {
+    id: 1,
+    firstname: 'Walber'
+  },
+  {
+    id: 2,
+    firstname: 'W2k'
   }
-})
+])
+const username = ref('Walber')
 </script>
 
 <template>
@@ -57,14 +66,30 @@ onMounted(async () => {
   </header>
 
   <RouterView class="content" />
-  <section class="section-user">
+  <!-- <section class="section-user">
     <h1>Users</h1>
     <ul>
       <li v-for="user in users" :key="user.id">
         {{ user.firstname }}
       </li>
     </ul>
-  </section>
+  </section> -->
+  <input type="text" v-model="username" />
+
+  <template v-for="user in users" :key="user.id">
+    <input
+      type="checkbox"
+      @click="username === user.firstname"
+      :checked="username === user.firstname"
+    />
+    {{ user.firstname }}
+  </template>
+
+  <select name="" id="" v-model="username">
+    <option v-for="user in users" :key="user.id" :value="user.firstname">
+      {{ user.firstname }}
+    </option>
+  </select>
 </template>
 
 <style lang="scss">
