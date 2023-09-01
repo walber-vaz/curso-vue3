@@ -8,3 +8,10 @@ export interface IUser {
   created_at: string
   updated_at: string
 }
+
+export type User = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+}
