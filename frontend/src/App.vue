@@ -1,6 +1,4 @@
 <script lang="ts">
-import type { IUser } from '@/types/IUser'
-import { fetchApi } from '@/utils/fetchApi'
 import { RouterLink, RouterView } from 'vue-router'
 
 export default {
@@ -47,20 +45,31 @@ export default {
   // }
   data() {
     return {
-      users: [] as IUser[]
-    }
-  },
-
-  async mounted() {
-    try {
-      const { data } = await fetchApi.get<IUser[]>('/users')
-      this.users = data.sort((a: IUser, b: IUser) => a.firstname.localeCompare(b.firstname))
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message)
-      }
+      // users: [] as IUser[],
+      username: 'Walber',
+      users: [
+        {
+          id: 1,
+          name: 'Walber'
+        },
+        {
+          id: 2,
+          name: 'w2k'
+        }
+      ]
     }
   }
+
+  // async mounted() {
+  //   try {
+  //     const { data } = await fetchApi.get<IUser[]>('/users')
+  //     this.users = data.sort((a: IUser, b: IUser) => a.firstname.localeCompare(b.firstname))
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       console.log(error.message)
+  //     }
+  //   }
+  // }
 }
 </script>
 
@@ -84,14 +93,31 @@ export default {
   </div> -->
 
   <RouterView class="content" />
-  <section class="section-user">
+  <!-- <section class="section-user">
     <h1>Users</h1>
     <ul>
       <li v-for="user in users" :key="user.id">
         {{ user.firstname }}
       </li>
     </ul>
-  </section>
+  </section> -->
+  <input type="text" name="" id="" v-model="username" />
+
+  <template v-for="user in users" :key="user.id">
+    <input
+      @click="username = user.name"
+      type="checkbox"
+      name=""
+      id=""
+      :checked="username === user.name"
+    />{{ user.name }}
+  </template>
+
+  <select name="" id="" v-model="username">
+    <option v-for="user in users" :key="user.id" :value="user.name">
+      {{ user.name }}
+    </option>
+  </select>
 </template>
 
 <style lang="scss">
