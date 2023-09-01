@@ -74,13 +74,15 @@ const username = ref('Walber')
       </li>
     </ul>
   </section> -->
-  <input type="text" v-model="username" />
+  <input type="text" name="" id="" v-model="username" />
 
   <template v-for="user in users" :key="user.id">
     <input
       type="checkbox"
-      @click="username === user.firstname"
+      @click="username = user.firstname"
       :checked="username === user.firstname"
+      name=""
+      id=""
     />
     {{ user.firstname }}
   </template>
